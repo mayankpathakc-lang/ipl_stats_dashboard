@@ -1,121 +1,150 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { Trophy, AlertCircle, Zap, Target, TrendingUp, Swords } from 'lucide-react'
 import './App.css'
+import SearchBar from './components/SearchBar'
+import FilterPanel from './components/FilterPanel'
+import StatCard from './components/StatCard'
+import PlayerTable from './components/PlayerTable'
+import Pagination from './components/Pagination'
+import { usePlayers } from './hooks/usePlayers'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const {
+    players,
+    totalItems,
+    totalPages,
+    currentPage,
+    loading,
+    error,
+    filters,
+    selectedSeason,
+    selectedRole,
+    selectedTeam,
+    searchQuery,
+    sortBy,
+    sortOrder,
+    summary,
+    setSearchQuery,
+    setSelectedSeason,
+    setSelectedRole,
+    setSelectedTeam,
+    setCurrentPage,
+    handleSort,
+  } = usePlayers()
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app">
+      {/* Header */}
+      <header className="app-header">
+        <div className="header-content">
+          <div className="header-icon">
+            <Trophy size={24} />
+          </div>
+          <div className="header-text">
+            <h1>IPL <span>Stats</span> Dashboard</h1>
+            <p>Aggregated player performance metrics across seasons</p>
+          </div>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </header>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      {/* Main Content */}
+      <main className="app-main">
+        {/* Controls */}
+        <div className="controls-bar">
+          <div className="search-wrapper">
+            <SearchBar
+              value={searchQuery}
+              onChange={setSearchQuery}
+            />
+          </div>
+          <FilterPanel
+            seasons={filters.seasons}
+            roles={filters.roles}
+            teams={filters.teams}
+            selectedSeason={selectedSeason}
+            selectedRole={selectedRole}
+            selectedTeam={selectedTeam}
+            onSeasonChange={setSelectedSeason}
+            onRoleChange={setSelectedRole}
+            onTeamChange={setSelectedTeam}
+          />
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        {/* Summary Cards */}
+        {summary && (
+          <div className="summary-cards">
+            <StatCard
+              icon={<TrendingUp size={20} />}
+              title="Top Scorer"
+              value={summary.highest_runs}
+              subtitle={summary.highest_runs_player || '—'}
+              accentColor="#f5c518"
+            />
+            <StatCard
+              icon={<Target size={20} />}
+              title="Top Wicket-Taker"
+              value={summary.highest_wickets}
+              subtitle={summary.highest_wickets_player || '—'}
+              accentColor="#4ade80"
+            />
+            <StatCard
+              icon={<Zap size={20} />}
+              title="Best Strike Rate"
+              value={summary.best_strike_rate?.toFixed(1)}
+              subtitle={summary.best_strike_rate_player || '—'}
+              accentColor="#7c3aed"
+            />
+            <StatCard
+              icon={<Swords size={20} />}
+              title="Best Death Economy"
+              value={summary.best_death_economy?.toFixed(2)}
+              subtitle={summary.best_death_economy_player || '—'}
+              accentColor="#60a5fa"
+            />
+          </div>
+        )}
+
+        {/* Error Banner */}
+        {error && (
+          <div className="error-banner">
+            <AlertCircle size={18} />
+            {error}
+          </div>
+        )}
+
+        {/* Player Table */}
+        <div className="table-section">
+          <div className="table-header">
+            <h2>Player Statistics</h2>
+            <span className="result-count">
+              {totalItems} player{totalItems !== 1 ? 's' : ''} found
+            </span>
+          </div>
+          <div className="table-body">
+            <PlayerTable
+              players={players}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+              onSort={handleSort}
+              loading={loading}
+            />
+          </div>
+          {totalPages > 1 && (
+            <div className="pagination-wrapper">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="app-footer">
+        <p>IPL Stats Dashboard &mdash; Built with FastAPI &amp; React</p>
+      </footer>
+    </div>
   )
 }
 

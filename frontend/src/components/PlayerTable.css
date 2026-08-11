@@ -1,0 +1,121 @@
+/* PlayerTable.css */
+.table-container {
+  background-color: #12122a;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.table-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  /* Scroll shadow */
+  background: 
+    linear-gradient(to right, #12122a 30%, rgba(18, 18, 42, 0)),
+    linear-gradient(to right, rgba(18, 18, 42, 0), #12122a 70%) 0 100%,
+    radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)),
+    radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)) 0 100%;
+  background-repeat: no-repeat;
+  background-color: #12122a;
+  background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+  background-position: 0 0, 100%, 0 0, 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+
+.player-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.player-table th, .player-table td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.player-table th {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #8888aa;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  user-select: none;
+}
+
+.sortable-header {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sortable-header:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #e0e0ff;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sort-icon {
+  transition: color 0.2s;
+}
+
+.sort-icon.inactive {
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.sort-icon.active {
+  color: #f5c518;
+}
+
+.player-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.player-table tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.01);
+}
+
+.player-table tbody tr:hover {
+  background-color: #1a1a3e;
+}
+
+.player-table td {
+  color: #e0e0ff;
+  font-size: 0.95rem;
+}
+
+.player-name {
+  font-weight: 600;
+  color: #ffffff !important;
+}
+
+.stat-highlight {
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px !important;
+  color: #8888aa !important;
+  font-size: 1.1rem !important;
+}
+
+/* Skeleton Loading */
+.skeleton-cell {
+  height: 20px;
+  background: linear-gradient(90deg, #1a1a3e 25%, #2a2a5a 50%, #1a1a3e 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

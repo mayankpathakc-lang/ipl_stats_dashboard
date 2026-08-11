@@ -1,0 +1,62 @@
+/* FilterPanel.css */
+.filter-panel {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 150px;
+}
+
+.filter-icon {
+  position: absolute;
+  left: 14px;
+  color: #8888aa;
+  pointer-events: none;
+}
+
+.filter-select {
+  width: 100%;
+  padding: 12px 36px 12px 40px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #e0e0ff;
+  font-size: 0.95rem;
+  appearance: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  outline: none;
+}
+
+.filter-select:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.2);
+}
+
+.filter-select option {
+  background-color: #12122a;
+  color: #e0e0ff;
+}
+
+/* Custom arrow */
+.filter-group::after {
+  content: '';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #8888aa;
+  pointer-events: none;
+}
