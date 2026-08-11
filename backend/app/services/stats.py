@@ -9,6 +9,16 @@ CSV_PATH = DATA_DIR / "ipl_player_stats.csv"
 
 _df_cache: Optional[pd.DataFrame] = None
 
+# Explicit allowlist of columns the API may sort by
+SORTABLE_COLUMNS = {
+    "player_name", "season", "role", "team", "matches",
+    "runs", "balls_faced", "batting_strike_rate",
+    "powerplay_strike_rate", "middle_strike_rate", "death_strike_rate",
+    "boundaries_fours", "boundaries_sixes", "highest_score",
+    "fifties", "hundreds", "overs_bowled", "runs_conceded",
+    "wickets", "bowling_economy", "death_over_economy", "dot_ball_percentage"
+}
+
 
 def load_dataset(csv_path: Optional[Path] = None) -> pd.DataFrame:
     """Loads and caches the IPL player stats CSV dataset."""
@@ -16,7 +26,7 @@ def load_dataset(csv_path: Optional[Path] = None) -> pd.DataFrame:
     path_to_load = csv_path or CSV_PATH
     
     if not path_to_load.exists():
-        raise FileNotFoundError(f"IPL stats CSV file not found at: {path_to_load}")
+        raise FileNotFoundError("IPL stats dataset file not found.")
         
     df = pd.read_csv(path_to_load)
     # Fill NaN values appropriately
@@ -85,9 +95,8 @@ def filter_and_sort_players(
         query = search.strip().lower()
         filtered_df = filtered_df[filtered_df["player_name"].str.lower().str.contains(query, regex=False)]
 
-    # Validate sort column
-    valid_sort_columns = list(df.columns)
-    if sort_by not in valid_sort_columns:
+    # Validate sort column against allowlist
+    if sort_by not in SORTABLE_COLUMNS:
         sort_by = "runs"
 
     ascending = (sort_order.lower() == "asc")
