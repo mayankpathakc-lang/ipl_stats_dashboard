@@ -52,9 +52,9 @@ export const usePlayers = () => {
     const loadSummary = async () => {
       try {
         const data = await fetchSummary({
-          season: selectedSeason,
-          role: selectedRole,
-          team: selectedTeam,
+          season: selectedSeason ? parseInt(selectedSeason, 10) : undefined,
+          role: selectedRole || undefined,
+          team: selectedTeam || undefined,
         });
         setSummary(data);
       } catch (err) {
@@ -70,26 +70,26 @@ export const usePlayers = () => {
       setError(null);
       try {
         const data = await fetchPlayers({
-          search: debouncedSearchQuery,
-          season: selectedSeason,
-          role: selectedRole,
-          team: selectedTeam,
+          search: debouncedSearchQuery || undefined,
+          season: selectedSeason ? parseInt(selectedSeason, 10) : undefined,
+          role: selectedRole || undefined,
+          team: selectedTeam || undefined,
           sort_by: sortBy,
           sort_order: sortOrder,
           page: currentPage,
           page_size: pageSize,
         });
-        // Handle cases where response might be flat array or paginated object
+        
         if (Array.isArray(data)) {
           setPlayers(data);
         } else {
-          setPlayers(data.players || data.data || []);
-          setTotalItems(data.total_items || data.total || 0);
+          setPlayers(data.data || data.players || []);
+          setTotalItems(data.total || data.total_items || 0);
           setTotalPages(data.total_pages || 1);
         }
       } catch (err) {
         console.error("Failed to load players", err);
-        setError("Failed to fetch players data. Please try again later.");
+        setError("Unable to load player statistics. Please check connection and try again.");
       } finally {
         setLoading(false);
       }
@@ -105,6 +105,16 @@ export const usePlayers = () => {
       setSortOrder('desc');
     }
   }, [sortBy]);
+
+  const resetFilters = useCallback(() => {
+    setSelectedSeason('');
+    setSelectedRole('');
+    setSelectedTeam('');
+    setSearchQuery('');
+    setSortBy('runs');
+    setSortOrder('desc');
+    setCurrentPage(1);
+  }, []);
 
   // Reset to first page on filter changes (excluding page changes themselves)
   useEffect(() => {
@@ -135,6 +145,7 @@ export const usePlayers = () => {
     setSortOrder,
     setCurrentPage,
     handleSort,
+    resetFilters,
   };
 };
 

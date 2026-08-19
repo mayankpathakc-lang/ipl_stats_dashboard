@@ -1,4 +1,4 @@
-import { Trophy, AlertCircle, Zap, Target, TrendingUp, Swords } from 'lucide-react'
+import { Trophy, AlertCircle, Zap, Target, TrendingUp, ShieldCheck } from 'lucide-react'
 import './App.css'
 import SearchBar from './components/SearchBar'
 import FilterPanel from './components/FilterPanel'
@@ -29,6 +29,7 @@ function App() {
     setSelectedTeam,
     setCurrentPage,
     handleSort,
+    resetFilters,
   } = usePlayers()
 
   return (
@@ -37,7 +38,7 @@ function App() {
       <header className="app-header">
         <div className="header-content">
           <div className="header-icon">
-            <Trophy size={24} />
+            <Trophy size={26} />
           </div>
           <div className="header-text">
             <h1>IPL <span>Stats</span> Dashboard</h1>
@@ -66,6 +67,7 @@ function App() {
             onSeasonChange={setSelectedSeason}
             onRoleChange={setSelectedRole}
             onTeamChange={setSelectedTeam}
+            onResetFilters={resetFilters}
           />
         </div>
 
@@ -73,30 +75,30 @@ function App() {
         {summary && (
           <div className="summary-cards">
             <StatCard
-              icon={<TrendingUp size={20} />}
-              title="Top Scorer"
-              value={summary.highest_runs}
+              icon={<TrendingUp size={22} />}
+              title="Top Run Scorer"
+              value={summary.highest_runs || 0}
               subtitle={summary.highest_runs_player || '—'}
               accentColor="#f5c518"
             />
             <StatCard
-              icon={<Target size={20} />}
+              icon={<Target size={22} />}
               title="Top Wicket-Taker"
-              value={summary.highest_wickets}
+              value={summary.highest_wickets || 0}
               subtitle={summary.highest_wickets_player || '—'}
               accentColor="#4ade80"
             />
             <StatCard
-              icon={<Zap size={20} />}
+              icon={<Zap size={22} />}
               title="Best Strike Rate"
-              value={summary.best_strike_rate?.toFixed(1)}
+              value={summary.best_strike_rate ? summary.best_strike_rate.toFixed(1) : '—'}
               subtitle={summary.best_strike_rate_player || '—'}
-              accentColor="#7c3aed"
+              accentColor="#c084fc"
             />
             <StatCard
-              icon={<Swords size={20} />}
+              icon={<ShieldCheck size={22} />}
               title="Best Death Economy"
-              value={summary.best_death_economy?.toFixed(2)}
+              value={summary.best_death_economy ? summary.best_death_economy.toFixed(2) : '—'}
               subtitle={summary.best_death_economy_player || '—'}
               accentColor="#60a5fa"
             />
@@ -107,11 +109,11 @@ function App() {
         {error && (
           <div className="error-banner">
             <AlertCircle size={18} />
-            {error}
+            <span>{error}</span>
           </div>
         )}
 
-        {/* Player Table */}
+        {/* Player Table Section */}
         <div className="table-section">
           <div className="table-header">
             <h2>Player Statistics</h2>
@@ -126,6 +128,7 @@ function App() {
               sortOrder={sortOrder}
               onSort={handleSort}
               loading={loading}
+              onResetFilters={resetFilters}
             />
           </div>
           {totalPages > 1 && (

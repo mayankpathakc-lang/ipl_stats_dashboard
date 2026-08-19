@@ -1,8 +1,9 @@
 /* FilterPanel.css */
 .filter-panel {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .filter-group {
@@ -10,7 +11,7 @@
   display: flex;
   align-items: center;
   flex: 1;
-  min-width: 150px;
+  min-width: 140px;
 }
 
 .filter-icon {
@@ -22,12 +23,12 @@
 
 .filter-select {
   width: 100%;
-  padding: 12px 36px 12px 40px;
+  padding: 12px 34px 12px 38px;
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   color: #e0e0ff;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   appearance: none;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -50,13 +51,34 @@
 .filter-group::after {
   content: '';
   position: absolute;
-  right: 16px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   width: 0;
   height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #8888aa;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #8888aa;
   pointer-events: none;
+}
+
+.reset-filters-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 16px;
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  border-radius: 8px;
+  color: #fca5a5;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-filters-btn:hover {
+  background: rgba(248, 113, 113, 0.22);
+  color: #ffffff;
+  border-color: rgba(248, 113, 113, 0.4);
 }
